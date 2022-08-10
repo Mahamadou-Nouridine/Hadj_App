@@ -1,12 +1,9 @@
-import { GlobalStyle } from './styles/GlobalStyle'
+import { Logpage } from "./components/Logpage";
+import { Pageprincipal } from "./components/Pagepricipal";
 
-import { Greetings } from './components/Greetings'
 
 export function App() {
-  return (
-    <>
-      <GlobalStyle />
-      <Greetings />
-    </>
-  )
+  return (<>
+  <Pageprincipal/>
+  </>)
 }
