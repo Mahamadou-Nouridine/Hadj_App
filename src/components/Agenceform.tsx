@@ -24,11 +24,9 @@ export const Agenceform = (props: {addAgence: (nom: string, number: string, Desc
             }
         }
         file.readAsDataURL(e.target.files[0])
-        console.log(image); 
     }
     const onNumber = (e:any)=>{
         setNumber(e.target.value);
-        console.log(number); 
     }
 
     const handleSubmit = (e:any) =>{
@@ -46,7 +44,7 @@ export const Agenceform = (props: {addAgence: (nom: string, number: string, Desc
     // let im =
 
     return <>
-    <div className="bg-primary info-pelerins" style={{ height: 'calc(100vh - 140px)', width: '67%' }}>
+    <div className="info-pelerins" style={{ height: 'calc(100vh - 140px)', width: '67%' }}>
             <div className="bg-light d-flex justify-content-around" style={{ width: '100%', height: 60 }}>
                
 
@@ -75,7 +73,7 @@ export const Agenceform = (props: {addAgence: (nom: string, number: string, Desc
             </div>
             <div className="buttons ms-n5 w-25 d-flex justify-content-around">
                 <button type="submit" className="btn btn-success">Ajouter</button>
-                <button  type="button" className="btn btn-secondary">Annuler</button>
+                <button onClick={()=>props.setAffichage('Listpelerins')} type="button" className="btn btn-secondary">Annuler</button>
             </div>
         </form>
         </div>

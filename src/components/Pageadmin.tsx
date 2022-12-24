@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { toLocaleString } from "../../webpack/rules.webpack"
 import { Agence } from "./Agence"
 import { Agenceform } from "./Agenceform"
@@ -13,7 +13,7 @@ import { Pelerinform } from "./Pelerinform"
 import { Profilepelerin } from "./Profilepelerin"
 import { agence, pelerin } from "./types"
 import {v4} from 'uuid'
-// import { charger } from "./dataFetching"
+import { charger } from "./dataFetching"
 import { info } from "sass"
 // import { charger } from "./dataFetching"
 
@@ -26,13 +26,42 @@ import { info } from "sass"
 //     }
 // }
 
+export const agencesi = [
+    {
+        nom: 'Afuwa',
+        Description: 'Voyagez tranquillement',
+        image: 'https://as1.ftcdn.net/v2/jpg/04/88/85/60/1000_F_488856019_Ld4i4cSYnR3mLjM7Zww2FkxnrJkDlzH0.jpg',
+        id: 'trois',
+        number: 2345678,
+        pass: 34567890,
+        pelerins: [
+            {
+                nom: 'Mahamadou',
+                prenom: 'Nouridine',
+                tel: 23456789,
+                photo: 'https://cdn-icons.flaticon.com/png/512/2202/premium/2202112.png?token=exp=1660147624~hmac=488e26b14b32936d4f284aeaecab535c',
+                lieuNaissance: 'Maradi',
+                lieuPovenance: 'Niamey',
+                dateNaissance: '2000-12-12',
+                passport: 234567,
+                dateEnregistrement: '2000-12-12',
+                accepted: false,
+                agence: 'Afuwa',
+                id: 'trois',
+                rejected: false
+            }
+        ]
+    
+    }
+]
+
 
 
 // eslint-disable-next-line no-unused-vars
 // let agences: agence[];
 
 // eslint-disable-next-line no-undef
-export const Pageprincipal = (): JSX.Element => {
+export const Pageadmin = (props:{exit:()=>void}): JSX.Element => {
     const agenceExtraite = localStorage.getItem('agences') as string;
     let agenceExtraiteParse ;
     
@@ -40,7 +69,7 @@ export const Pageprincipal = (): JSX.Element => {
         agenceExtraiteParse = JSON.parse(agenceExtraite)
     }
     const [agences , setAgences] = useState<agence[]>(agenceExtraiteParse)
-    const [selectedPilgrim,setSelectedPilgrim] = useState<pelerin>()
+    const [selectedPilgrim, setSelectedPilgrim] = useState<pelerin>()
     const [infoVariable, setInfovVariable] = useState<"Listpelerins" | 'Pelerinform' | 'Profilepelerin' | 'Agenceform'| 'Profileagence'|null>()
     const [selectedAgence, setSelectedAgence] = useState<agence>()
     const [displayingAgence, setDisplayingAgence] = useState<agence>()
@@ -71,8 +100,6 @@ export const Pageprincipal = (): JSX.Element => {
             })
             return agence
         }) 
-        // charger()
-        console.log('pélérin validé');
         
         setAgences(newArr)
     }
@@ -80,12 +107,12 @@ export const Pageprincipal = (): JSX.Element => {
         const newArr = [...agences].map(agence =>{
             agence.pelerins.forEach(pelerin=>{
                 if(pelerin.id === id){
-                     pelerin.rejected = true
+                     pelerin.rejected = true;
+                     pelerin.accepted = false
                 }
             })
             return agence
         }) 
-        console.log('pélérin rejeté');
         
         setAgences(newArr)
     }
@@ -100,9 +127,9 @@ export const Pageprincipal = (): JSX.Element => {
         selectedAgence?.pelerins.forEach((pelerin) => {
             if (pelerin.id === id){
                 setSelectedPilgrim(pelerin)
+                
             }
         })
-        console.log('pelerin choisi');
         
         setInfovVariable('Profilepelerin')
     }
@@ -119,17 +146,21 @@ export const Pageprincipal = (): JSX.Element => {
 
     agences.forEach(agence =>{
         totalPelerin+=agence.pelerins.length;
-        totalRejete+= agence.pelerins.filter(pelerin=>pelerin.rejected&&!pelerin.accepted).length
+        totalRejete+= agence.pelerins.filter(pelerin=>pelerin.rejected).length
         totalAccept+= agence.pelerins.filter(pelerin=>pelerin.accepted&&!pelerin.rejected).length
     })
     
+
+    useEffect(() => {
+        localStorage.setItem('agences',JSON.stringify(agences) )
+      }, [agences])
     
     return <>
         <div className="d-flex">
-            <div className='bg-danger border' style={{ height: '100vh', width: '20vw', minWidth: 300 }}>
+            <div className=' border list-agences' style={{ height: '100vh', width: '20vw', minWidth: 300 }}>
                 <nav className="navbar navbar-expand-lg bg-light">
                     <div className="container-fluid d-flex justify-content-around">
-                        <img width={50} src="https://as1.ftcdn.net/v2/jpg/04/88/85/60/1000_F_488856019_Ld4i4cSYnR3mLjM7Zww2FkxnrJkDlzH0.jpg" alt="" />
+                        <img  width={50} src="https://as1.ftcdn.net/v2/jpg/04/88/85/60/1000_F_488856019_Ld4i4cSYnR3mLjM7Zww2FkxnrJkDlzH0.jpg" alt="" />
                     </div>
                 </nav>
 
@@ -151,11 +182,12 @@ export const Pageprincipal = (): JSX.Element => {
                             </form>
                         </div>
                         <img width={50} src="https://cdn-icons.flaticon.com/png/512/2202/premium/2202112.png?token=exp=1660147624~hmac=488e26b14b32936d4f284aeaecab535c" alt="" />
+                        <button onClick={props.exit} className="btn btn-danger">quitter</button>
                     </div>
                 </nav>
                 <div className="d-flex justify-content-around align-items-center" style={{ height: 'calc(100vh - 70px)' }}>
                     <Infovariable handleAgenceDelete={handleAgenceDelete} displayingAgence={displayingAgence}  selectedAgence={selectedAgence} addAgence = {addAgence} setAffichage= {setInfovVariable} handleValidate= {handleValidate} handleReject= {handleReject} pilgrimSelect= {handlePilgrimSelect}  pelerins={selectedAgence?.pelerins} pelerin = {selectedPilgrim} affichage= {infoVariable}/>
-                    <div className="bg-secondary info-agences" style={{ height: 'calc(100vh - 140px)', width: '30%' }}>
+                    <div className=" info-agences" style={{ height: 'calc(100vh - 140px)', width: '30%', backgroundColor:'white' }}>
                         <div className="bg-light d-flex justify-content-around" style={{ width: '100%', height: 60 }}>
                             <div className="d-flex flex-column align-items-center " >
                                 <p className="mt-2">Agence(s)</p>
@@ -183,7 +215,7 @@ export const Pageprincipal = (): JSX.Element => {
                         </div>
                         <div className="pelerins-attente" style={{ height: 'calc(100vh - 300px', overflow: 'scroll' }}>
                             {agences.map((agence) => {
-                                return agence.pelerins.map((pelerin, index) => !pelerin.accepted && !pelerin.rejected ? <Pelerinattente handleReject={handleReject} handleValidate= {handleValidate} key={index} pelerin={pelerin} /> : null)
+                                return agence.pelerins.map((pelerin, index) => !pelerin.accepted && !pelerin.rejected ? <Pelerinattente pilgrimSelect= {handlePilgrimSelect} handleReject={handleReject} handleValidate= {handleValidate} key={index} pelerin={pelerin} /> : null)
                             })}
                         </div>
 

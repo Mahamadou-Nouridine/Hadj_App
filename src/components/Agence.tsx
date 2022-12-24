@@ -3,9 +3,9 @@ import { agence } from "./types";
 
 // eslint-disable-next-line no-undef, no-unused-vars
 export const Agence = (props: { agence: agence, agenceChange  : () => void , selectedAgence: agence|undefined, setAgenceProfile:()=>void, setDisplayingAgence: Function, displayingAgence: agence|undefined, handleAgenceDelete:(id:string)=>void }): JSX.Element => {
-    const color = props.agence === props.selectedAgence? 'grey': 'white'
+    const color = props.agence === props.selectedAgence? 'rgba(153, 175, 186, 0.77)': '#4A5459'
     return <>
-        <div   className="agence m-2 d-flex justify-content-around align-items-center " style={{height: 100, backgroundColor: color}}>
+        <div   className="agence m-2 d-flex justify-content-around align-items-center text-white" style={{height: 100, backgroundColor: color}}>
             <img onClick={props.agenceChange} width={props.agence.nom==='Al-Barka' ?70:90} src={props.agence.image} alt="" style={{cursor: 'pointer'}}/>
             <h5 style={{width : '30%', fontSize: 15}}>
                 {props.agence.nom}

@@ -1,5 +1,4 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-
 let mainWindow: BrowserWindow | null
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
@@ -33,9 +32,6 @@ function createWindow () {
 }
 
 async function registerListeners () {
-  /**
-   * This comes from bridge integration, check bridge.ts
-   */
   ipcMain.on('message', (_, message) => {
     console.log(message)
   })
@@ -57,3 +53,32 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+// const menuItems : MenuItemConstructorOptions | MenuItem= [
+//   {
+//     label: 'first',
+//     submenu: [
+//       {
+//         label : "about"
+//       }
+//     ]
+//   },
+//   {
+//     label: 'File',
+//     submenu: [
+//       {
+//         label : "exit",
+//         role: "close"
+//       },
+//       {
+//         type : "separator"
+//       },
+//       {
+//         label : "minimise"
+//       }
+//     ]
+//   },
+// ]
+
+// const menu = Menu.buildFromTemplate(menuItems)
+// Menu.setApplicationMenu(menu)

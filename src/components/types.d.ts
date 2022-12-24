@@ -1,12 +1,12 @@
 export declare interface pelerin {
     nom: string;
     prenom: string;
-    tel: string;
-    photo: string;
+    tel: string | number;
+    photo: string | ArrayBuffer;
     lieuNaissance: string;
     lieuPovenance: string;
     dateNaissance: string;
-    passport: string;
+    passport: string | number;
     dateEnregistrement: string;
     accepted: boolean;
     agence: string;
@@ -17,10 +17,12 @@ export declare interface pelerin {
 export declare interface agence {
     nom: string;
     Description: string;
-    image: string|ArrayBuffer;
+    image: string | ArrayBuffer;
     id: string;
-    number:string| number,
-    pass: string|number
+    number: string | number,
+    pass: string | number
     pelerins: pelerin[];
-    
+
 }
+
+
